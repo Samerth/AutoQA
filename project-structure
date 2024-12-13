@@ -1,0 +1,18 @@
+test-recorder-poc/
+├── src/
+│   ├── auth/
+│   │   ├── AuthService.ts
+│   │   └── types.ts
+│   ├── interaction/
+│   │   ├── InteractionTracker.ts
+│   │   └── types.ts
+│   ├── scenario/
+│   │   ├── ScenarioManager.ts
+│   │   └── types.ts
+│   ├── storage/
+│   │   └── FileStorage.ts
+│   └── index.ts
+├── tests/
+│   └── example.spec.ts
+├── package.json
+└── tsconfig.json 
