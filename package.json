@@ -1,0 +1,41 @@
+{
+  "name": "test-recorder-poc",
+  "version": "1.0.0",
+  "description": "Test Recorder POC for web interaction tracking",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start:server": "ts-node src/server/index.ts",
+    "start:frontend": "vite src/frontend",
+    "build": "tsc && vite build src/frontend",
+    "test": "jest",
+    "dev": "concurrently \"npm run start:server\" \"npm run start:frontend\""
+  },
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^4.2.1",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^8.2.2",
+    "express": "^4.21.2",
+    "playwright": "^1.42.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "uuid": "^9.0.1",
+    "vite": "^5.1.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.17.10",
+    "@types/uuid": "^9.0.8",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
