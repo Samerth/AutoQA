@@ -14,10 +14,13 @@ export class InteractionTracker {
     try {
       this.browser = await chromium.launch({ headless: false });
       this.page = await this.browser.newPage();
-      await this.page.goto(url);
       
-      console.log('✅ Browser launched successfully');
+      // Setup event listeners before navigation
       await this.setupEventListeners();
+      
+      // Navigate to the URL
+      await this.page.goto(url);
+      console.log('✅ Browser launched successfully');
     } catch (error) {
       console.error('❌ Failed to start browser:', error);
       throw error;
@@ -32,51 +35,81 @@ export class InteractionTracker {
       throw new Error('Page not initialized');
     }
 
-    await this.page.exposeFunction('recordInteraction', (interaction: Omit<Interaction, 'id' | 'timestamp'>) => {
-      const fullInteraction = {
-        ...interaction,
-        id: uuidv4(),
-        timestamp: Date.now()
-      };
-      this.interactions.push(fullInteraction);
-      console.log('📝 Recorded interaction:', {
-        type: fullInteraction.type,
-        selector: fullInteraction.selector,
-        value: fullInteraction.value
-      });
+    // Listen for clicks
+    this.page.on('click', async (event) => {
+      try {
+        const element = event.target();
+        const selector = await this.getSelector(element);
+        
+        const interaction: Omit<Interaction, 'id'> = {
+          type: InteractionType.CLICK,
+          selector,
+          timestamp: Date.now()
+        };
+        
+        this.recordInteraction(interaction);
+      } catch (error) {
+        console.error('Failed to record click:', error);
+      }
     });
 
-    await this.page.evaluate(() => {
-      const recordInteraction = (window as any).recordInteraction;
-      
-      document.addEventListener('click', (event) => {
-        const target = event.target as HTMLElement;
-        recordInteraction({
-          type: 'click',
-          selector: getCssSelector(target)
-        });
-      });
-
-      document.addEventListener('input', (event) => {
-        const target = event.target as HTMLElement;
-        recordInteraction({
-          type: 'input',
-          selector: getCssSelector(target),
-          value: (target as HTMLInputElement).value
-        });
-      });
-
-      function getCssSelector(element: HTMLElement): string {
-        if (element.id) return `#${element.id}`;
-        if (element.className) {
-          const classes = Array.from(element.classList).join('.');
-          if (classes) return `.${classes}`;
-        }
-        return element.tagName.toLowerCase();
+    // Listen for input changes
+    this.page.on('input', async (event) => {
+      try {
+        const element = event.target();
+        const selector = await this.getSelector(element);
+        const value = await element.inputValue();
+        
+        const interaction: Omit<Interaction, 'id'> = {
+          type: InteractionType.INPUT,
+          selector,
+          value,
+          timestamp: Date.now()
+        };
+        
+        this.recordInteraction(interaction);
+      } catch (error) {
+        console.error('Failed to record input:', error);
       }
     });
     
     console.log('✅ Event listeners setup complete');
+  }
+
+  private async getSelector(element: any): Promise<string> {
+    try {
+      // Try to get ID
+      const id = await element.getAttribute('id');
+      if (id) return `#${id}`;
+
+      // Try to get classes
+      const className = await element.getAttribute('class');
+      if (className) {
+        const classes = className.split(' ').filter(Boolean);
+        if (classes.length > 0) return `.${classes.join('.')}`;
+      }
+
+      // Fallback to tag name
+      const tagName = await element.evaluate((el: HTMLElement) => el.tagName.toLowerCase());
+      return tagName;
+    } catch (error) {
+      console.error('Failed to get selector:', error);
+      return 'unknown';
+    }
+  }
+
+  private recordInteraction(interaction: Omit<Interaction, 'id'>): void {
+    const fullInteraction = {
+      ...interaction,
+      id: uuidv4()
+    };
+    
+    this.interactions.push(fullInteraction);
+    console.log('📝 Recorded interaction:', {
+      type: fullInteraction.type,
+      selector: fullInteraction.selector,
+      value: fullInteraction.value
+    });
   }
 
   async stop(): Promise<Interaction[]> {
