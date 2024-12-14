@@ -5,35 +5,35 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "start:server": "ts-node src/server/index.ts",
-    "start:frontend": "vite src/frontend",
-    "build": "tsc && vite build src/frontend",
-    "test": "jest",
-    "dev": "concurrently \"npm run start:server\" \"npm run start:frontend\""
+    "start:server": "tsx src/server/index.ts",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "jest"
   },
   "dependencies": {
     "@types/express": "^5.0.0",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.2",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "bcryptjs": "^2.4.3",
     "concurrently": "^8.2.2",
     "express": "^4.21.2",
     "playwright": "^1.42.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "uuid": "^9.0.1",
-    "vite": "^5.1.4"
+    "vite": "^5.4.11"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.17.10",
     "@types/uuid": "^9.0.8",
+    "@vitejs/plugin-react": "^4.3.4",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "tsx": "^4.19.2",
+    "typescript": "^5.0.0"
   },
   "keywords": [],
   "author": "",

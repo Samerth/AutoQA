@@ -47,13 +47,11 @@ export class InteractionTracker {
     });
 
     await this.page.evaluate(() => {
-      console.log('🎮 Setting up browser event listeners');
+      const recordInteraction = (window as any).recordInteraction;
       
       document.addEventListener('click', (event) => {
         const target = event.target as HTMLElement;
-        console.log('🖱️ Click detected:', target);
-        // @ts-ignore
-        window.recordInteraction({
+        recordInteraction({
           type: 'click',
           selector: getCssSelector(target)
         });
@@ -61,9 +59,7 @@ export class InteractionTracker {
 
       document.addEventListener('input', (event) => {
         const target = event.target as HTMLElement;
-        console.log('⌨️ Input detected:', target);
-        // @ts-ignore
-        window.recordInteraction({
+        recordInteraction({
           type: 'input',
           selector: getCssSelector(target),
           value: (target as HTMLInputElement).value
@@ -72,7 +68,10 @@ export class InteractionTracker {
 
       function getCssSelector(element: HTMLElement): string {
         if (element.id) return `#${element.id}`;
-        if (element.className) return `.${element.className.split(' ').join('.')}`;
+        if (element.className) {
+          const classes = Array.from(element.classList).join('.');
+          if (classes) return `.${classes}`;
+        }
         return element.tagName.toLowerCase();
       }
     });
