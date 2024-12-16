@@ -34,18 +34,13 @@ A web-based test recorder that captures user interactions and generates automate
 ## Running the Application
 
 The application consists of two parts: a backend server and a frontend development server.
-
-1. Start the backend server:
-   ```bash
-   npm run start:server
-   ```
-   This will start the backend server at http://localhost:3000
-
-2. In a new terminal, start the frontend development server:
+ In a new terminal, start the frontend development server:
    ```bash
    npm run dev
    ```
-   This will start the frontend at http://localhost:3001
+   This will start the backend server at http://localhost:3000
+
+   This will also start the frontend at http://localhost:3001
 
 ## Project Structure
 
