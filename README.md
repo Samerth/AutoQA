@@ -34,7 +34,7 @@ A web-based test recorder that captures user interactions and generates automate
 ## Running the Application
 
 The application consists of two parts: a backend server and a frontend development server.
- In a new terminal, start the frontend development server:
+ In a new terminal, start  development server:
    ```bash
    npm run dev
    ```
