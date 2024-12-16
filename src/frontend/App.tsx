@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TestRecorder } from './components/TestRecorder.js';
 import { ScenarioList } from './components/ScenarioList.js';
+import { scenarioApi } from './api/scenarioApi';
 import './App.css';
 
 function App() {
@@ -10,13 +11,10 @@ function App() {
 
   const handleStartRecording = async () => {
     try {
-      // Call your backend API to start recording
-      const response = await fetch('/api/record/start', {
-        method: 'POST',
-      });
-      if (response.ok) {
-        setIsRecording(true);
-      }
+      console.log('Starting recording...');
+      await scenarioApi.startRecording('https://calendly.com');
+      setIsRecording(true);
+      console.log('Recording started successfully');
     } catch (error) {
       console.error('Failed to start recording:', error);
     }
@@ -24,15 +22,11 @@ function App() {
 
   const handleStopRecording = async () => {
     try {
-      // Call your backend API to stop recording
-      const response = await fetch('/api/record/stop', {
-        method: 'POST',
-      });
-      if (response.ok) {
-        setIsRecording(false);
-        // Refresh scenarios list
-        fetchScenarios();
-      }
+      const result = await scenarioApi.stopRecording();
+      setIsRecording(false);
+      // Refresh scenarios list
+      fetchScenarios();
+      console.log('Recording stopped, created scenario:', result.scenarioId);
     } catch (error) {
       console.error('Failed to stop recording:', error);
     }
@@ -40,11 +34,8 @@ function App() {
 
   const fetchScenarios = async () => {
     try {
-      const response = await fetch('/api/scenarios');
-      if (response.ok) {
-        const data = await response.json();
-        setScenarios(data);
-      }
+      const data = await scenarioApi.listScenarios();
+      setScenarios(data);
     } catch (error) {
       console.error('Failed to fetch scenarios:', error);
     }
@@ -52,13 +43,8 @@ function App() {
 
   const handleRunTest = async (scenarioId: string) => {
     try {
-      const response = await fetch(`/api/scenarios/${scenarioId}/run`, {
-        method: 'POST',
-      });
-      if (response.ok) {
-        // Handle successful test run
-        console.log('Test completed successfully');
-      }
+      await scenarioApi.runScenario(scenarioId);
+      console.log('Test completed successfully');
     } catch (error) {
       console.error('Failed to run test:', error);
     }

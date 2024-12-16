@@ -1,0 +1,35 @@
+{
+  "id": "916377cd-9612-4bf1-992d-1242d80d51b6",
+  "name": "New Test Scenario",
+  "interactions": [
+    {
+      "type": "navigation",
+      "fromUrl": "https://calendly.com",
+      "toUrl": "https://calendly.com/",
+      "timestamp": 1734320551011,
+      "selector": "window",
+      "url": "https://calendly.com/",
+      "id": "ec4b8d16-8961-42c8-9c4f-3057e1360ca8"
+    },
+    {
+      "type": "navigation",
+      "fromUrl": "https://calendly.com/",
+      "toUrl": "https://calendly.com/pricing",
+      "timestamp": 1734320556158,
+      "selector": "window",
+      "url": "https://calendly.com/pricing",
+      "id": "158bcba7-49d0-444f-8ecb-5ff47f881594"
+    },
+    {
+      "type": "navigation",
+      "fromUrl": "https://calendly.com/pricing",
+      "toUrl": "https://calendly.com/signup",
+      "timestamp": 1734320559551,
+      "selector": "window",
+      "url": "https://calendly.com/signup",
+      "id": "15c75831-dc14-4283-b91d-99609075ac01"
+    }
+  ],
+  "createdAt": 1734320575975,
+  "updatedAt": 1734320575983
+}

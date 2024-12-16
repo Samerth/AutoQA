@@ -24,21 +24,21 @@ export class AuthService {
     
 
   async authenticate(credentials: AuthCredentials): Promise<User | null> {
-    console.log(`🔑 Attempting authentication for user: ${credentials.username}`);
+    console.log(`Attempting authentication for user: ${credentials.username}`);
     const user = this.users.get(credentials.username);
     
     if (!user) {
-      console.warn(`⚠️ User not found: ${credentials.username}`);
+      console.warn(`User not found: ${credentials.username}`);
       return null;
     }
 
     const isValid = await bcrypt.compare(credentials.password, user.passwordHash);
-    console.log(`🔐 Authentication ${isValid ? 'successful' : 'failed'} for user: ${credentials.username}`);
+    console.log(`Authentication ${isValid ? 'successful' : 'failed'} for user: ${credentials.username}`);
     return isValid ? user : null;
   }
 
   private async createUser(credentials: AuthCredentials, isAdmin: boolean = false): Promise<User> {
-    console.log(`👤 Creating new user: ${credentials.username} (Admin: ${isAdmin})`);
+    console.log(`Creating new user: ${credentials.username} (Admin: ${isAdmin})`);
     const passwordHash = await bcrypt.hash(credentials.password, 10);
     const user: User = {
       username: credentials.username,
@@ -47,7 +47,7 @@ export class AuthService {
     };
     
     this.users.set(credentials.username, user);
-    console.log(`✅ User ${credentials.username} created successfully`);
+    console.log(`User ${credentials.username} created successfully`);
     return user;
   }
 } 
